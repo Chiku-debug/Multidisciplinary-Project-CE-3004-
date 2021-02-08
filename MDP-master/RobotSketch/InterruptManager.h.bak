@@ -1,0 +1,68 @@
+#include <Arduino.h>
+#include <PinChangeInterrupt.h>
+#include "Motor.h"
+
+/* Digital Pins
+#define M1_A 3
+#define M1_B 5
+#define M2_A 11
+#define M2_B 13
+*/
+
+
+
+#ifndef INTERRUPT_MANAGER_H
+#define INTERRUPT_MANAGER_H
+
+class InterruptManager{
+  public:
+    static Motor *LEFT;// = NULL;
+    static Motor *RIGHT;// = NULL;
+    static void Init(Motor* _LEFT, Motor* _RIGHT){
+      LEFT = _LEFT;
+      RIGHT = _RIGHT;
+
+      pinMode(M1_A, INPUT); pinMode(M1_B, INPUT); pinMode(M2_A, INPUT); pinMode(M2_B, INPUT);
+      attachPCINT((M1_A), (&InterruptManager::_INT_M1_A_FALL), FALLING);
+      //attachPCINT((M1_B), &InterruptManager::_INT_M1_B_FALL, FALLING);
+      //attachPCINT((M2_A), &InterruptManager::_INT_M2_A_FALL, FALLING);
+      //attachPCINT((M2_B), &InterruptManager::_INT_M2_B_FALL, FALLING);
+    }
+    static void _INT_M1_A_FALL(){
+      //attachPCINT((M1_A), (this->_INT_M1_A_RISE()), RISING);
+      LEFT->onAFall();
+    }
+    /*
+    void _INT_M1_A_RISE(){
+      attachPCINT((M1_A), (this->_INT_M1_A_FALL()), FALLING);
+      LEFT->onARise();
+    }
+    */
+    /*
+    void _INT_M1_B_FALL(){
+      attachPCINT((M1_B), &InterruptManager::*_INT_M1_B_RISE, RISING);
+      LEFT->onBFall();
+    }
+    void _INT_M1_B_RISE(){
+      attachPCINT((M1_B), &InterruptManager::*_INT_M1_B_FALL, FALLING);
+      LEFT->onBRise();
+    }
+    void _INT_M2_A_FALL(){
+      attachPCINT((M2_A), &InterruptManager::*_INT_M2_A_RISE, RISING);
+      RIGHT->onAFall();
+    }
+    void _INT_M2_A_RISE(){
+      attachPCINT((M2_A), &InterruptManager::*_INT_M2_A_FALL, FALLING);
+      RIGHT->onARise();
+    }
+    void _INT_M2_B_FALL(){
+      attachPCINT((M2_B), &InterruptManager::*_INT_M2_B_RISE, RISING);
+      RIGHT->onBFall();
+    }
+    void _INT_M2_B_RISE(){
+      attachPCINT((M2_B), &InterruptManager::*_INT_M2_B_FALL, FALLING);
+      RIGHT->onBRise();
+    }
+    */
+};
+#endif
